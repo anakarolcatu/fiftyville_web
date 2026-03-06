@@ -1,0 +1,23 @@
+services:
+  client:
+    build: 
+      context: ./client
+      target: development
+    ports:
+      - "5173:5173"
+    volumes:
+      - ./client/src:/app/src
+    depends_on:
+      - server
+  
+  server:
+    build: 
+      context: ./server
+      target: development
+    ports:
+      - "4000:4000"
+    volumes:
+      - ./server/src:/app/src
+    environment:
+      - PORT=4000
+      - NODE_ENV=development
