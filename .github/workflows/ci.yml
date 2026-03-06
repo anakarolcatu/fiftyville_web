@@ -1,0 +1,62 @@
+name: CI
+
+# When 
+on: 
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs: 
+  # Job 1: Check code quality
+  lint:
+    name: Lint
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout do código
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Instalar dependências do Client
+        run: cd client && npm ci
+
+      - name: Instalar dependências do Server
+        run: cd server && npm ci
+      
+      - name: Lint Client
+        run: cd client && npm run lint
+
+      - name: Lint Server
+        run: cd server && npm run lint
+
+  # Job 2: Build - check if it compiles without errors
+  build: 
+    name: Build
+    runs-on: ubuntu-latest
+    needs: lint 
+
+    steps: 
+      - name: Checkout do código
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Instalar dependências do Client
+        run: cd client && npm ci
+
+      - name: Instalar dependências do Server
+        run: cd server && npm ci
+        
+      - name: Lint Client
+        run: cd client && npm run build
+
+      - name: Lint Server
+        run: cd server && npm run build 
