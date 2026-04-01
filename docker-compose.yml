@@ -18,6 +18,7 @@ services:
       - "4000:4000"
     volumes:
       - ./server/src:/app/src
+      - ./server/prisma:/app/prisma
     environment:
       - PORT=4000
       - NODE_ENV=development
